@@ -8,6 +8,9 @@ import ModifyArticle from "./modifyArticle";
 
 export default function ArticleSection() {
   const [toggleForm, setToggleForm] = useState(false);
+
+  const [editId, setEditId] = useState<string | number>("");
+
   const [posts, setPosts] = useState<postItem[]>([
     {
       id: 1,
@@ -38,6 +41,8 @@ export default function ArticleSection() {
             setPosts={setPosts}
             key={item.id}
             item={item}
+            editId={editId}
+            setEditId={setEditId}
           />
         ))}
 

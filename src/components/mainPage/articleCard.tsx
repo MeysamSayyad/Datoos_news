@@ -14,14 +14,18 @@ export default function ArticleCard({
   item,
   posts,
   setPosts,
+  editId,
+  setEditId,
 }: {
   item: postItem;
   posts: postItem[];
   setPosts: React.Dispatch<postItem[]>;
+  editId: string | number;
+  setEditId: React.Dispatch<string | number>;
 }) {
   const [editArticle, setEditArticle] = useState(false);
 
-  return editArticle ? (
+  return editArticle && editId == item?.id ? (
     <ModifyArticle
       posts={posts}
       setPosts={setPosts}
@@ -34,8 +38,8 @@ export default function ArticleCard({
       <span className="cursor-pointer flex items-center justify-center  rounded-t-lg overflow-hidden h-[60%] w-full">
         <img
           className={` ${
-            !item?.image ? "w-[50%]  h-[60%]" : "object-cover"
-          } h-full block  w-full `}
+            !item?.image ? "w-[50%]  h-[60%]" : "object-cover h-full w-full"
+          }  block   `}
           src={item?.image ? item?.image : noPhoto}
           alt={item.title}
         />
@@ -59,6 +63,9 @@ export default function ArticleCard({
           <PencilSquareIcon
             onClick={() => {
               setEditArticle(true);
+
+              // setting Item id to prevent multiple edits
+              setEditId(item.id);
             }}
             className=" hover:text-secondary cursor-pointer size-[18px]"
           />
