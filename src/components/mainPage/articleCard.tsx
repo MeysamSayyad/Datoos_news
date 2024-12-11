@@ -6,6 +6,9 @@ import {
 import { postItem } from "../../types/mainPage";
 import textModifier from "../../utils/textmodifier";
 import noPhoto from "../../assets/images/no_photo.png";
+import { useState } from "react";
+
+import ModifyArticle from "./modifyArticle";
 
 export default function ArticleCard({
   item,
@@ -16,7 +19,17 @@ export default function ArticleCard({
   posts: postItem[];
   setPosts: React.Dispatch<postItem[]>;
 }) {
-  return (
+  const [editArticle, setEditArticle] = useState(false);
+
+  return editArticle ? (
+    <ModifyArticle
+      posts={posts}
+      setPosts={setPosts}
+      setToggleForm={setEditArticle}
+      edit={true}
+      item={item}
+    />
+  ) : (
     <article className="  shadow-[0px_0px_12px_5px_rgba(0,_0,_0,_0.1)] h-[416px] rounded-lg  justify-between  text-black w-full flex flex-col items-center">
       <span className="cursor-pointer flex items-center justify-center  rounded-t-lg overflow-hidden h-[60%] w-full">
         <img
@@ -43,7 +56,12 @@ export default function ArticleCard({
         </span>
         <span className=" gap-2 flex items-center ">
           {/* operation buttons */}
-          <PencilSquareIcon className=" hover:text-secondary cursor-pointer size-[18px]" />
+          <PencilSquareIcon
+            onClick={() => {
+              setEditArticle(true);
+            }}
+            className=" hover:text-secondary cursor-pointer size-[18px]"
+          />
           <TrashIcon
             onClick={() => {
               setPosts(posts.filter((i) => i.id != item.id));

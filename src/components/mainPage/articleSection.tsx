@@ -4,7 +4,7 @@ import firstPost from "../../assets/images/first_post.jpg";
 import secondPost from "../../assets/images/second_post.jpg";
 import ArticleCard from "./articleCard";
 import { PlusIcon } from "@heroicons/react/16/solid";
-import AddArticle from "./addArticle";
+import ModifyArticle from "./modifyArticle";
 
 export default function ArticleSection() {
   const [toggleForm, setToggleForm] = useState(false);
@@ -42,7 +42,7 @@ export default function ArticleSection() {
         ))}
 
         {toggleForm ? (
-          <AddArticle
+          <ModifyArticle
             setToggleForm={setToggleForm}
             posts={posts}
             setPosts={setPosts}

@@ -5,35 +5,61 @@ import {
 import { useState } from "react";
 import { postItem } from "../../types/mainPage";
 
-export default function AddArticle({
+export default function ModifyArticle({
   posts,
   setPosts,
   setToggleForm,
+  edit,
+  item,
 }: {
   posts: postItem[];
   setPosts: React.Dispatch<postItem[]>;
   setToggleForm: React.Dispatch<boolean>;
+  edit?: boolean;
+  item?: postItem;
 }) {
-  const [image, setImage] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(() => {
+    return edit && item?.image ? item.image : "";
+  });
+  const [title, setTitle] = useState(() => {
+    return edit && item?.title ? item?.title : "";
+  });
+  const [description, setDescription] = useState(() => {
+    return edit && item?.description ? item.description : "";
+  });
   const resetValue = () => {
     setImage("");
     setTitle("");
     setDescription("");
   };
+
+  const createArticle = () => {
+    const createdDate = new Date(Date.now());
+    const formatDate = new Intl.DateTimeFormat("en-US").format(createdDate);
+    setPosts([
+      ...posts,
+      { image, title, description, date: formatDate, id: Date.now() },
+    ]);
+    resetValue();
+    setToggleForm(false);
+  };
+  const editArticle = () => {
+    setPosts(
+      posts.map((i) => ({
+        ...i,
+        image: i.id == item?.id ? image : i.image,
+        description: i.id == item?.id ? description : i.description,
+        title: i.id == item?.id ? title : i.title,
+        date: i.date,
+      }))
+    );
+    setToggleForm(false);
+  };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        const createdDate = new Date(Date.now());
-        const formatDate = new Intl.DateTimeFormat("en-US").format(createdDate);
-        setPosts([
-          ...posts,
-          { image, title, description, date: formatDate, id: Date.now() },
-        ]);
-        resetValue();
-        setToggleForm(false);
+        edit ? editArticle() : createArticle();
       }}
       className=" h-[416px] rounded-lg  w-full pb-2 gap-2  items-center  shadow-[0px_0px_12px_5px_rgba(0,_0,_0,_0.1)] flex flex-col"
     >
@@ -69,7 +95,7 @@ export default function AddArticle({
               alt="uploadedImage"
             />
             <label
-              htmlFor="image"
+              htmlFor={edit ? "image" + item?.id : "image"}
               className="cursor-pointer  text-white  absolute right-0  bottom-0 opacity-0 border group-hover:opacity-80  transition-all bg-secondary w-fit flex flex-row  rounded-tl-full px-2 py-3 "
             >
               <ArrowUpTrayIcon className=" size-5" />
@@ -81,7 +107,7 @@ export default function AddArticle({
                   setImage(fileUrl);
                 }
               }}
-              id="image"
+              id={edit ? "image" + item?.id : "image"}
               name="image"
               type="file"
               className=" hidden"
@@ -91,7 +117,7 @@ export default function AddArticle({
           <>
             {/* upload button */}
             <label
-              htmlFor="image"
+              htmlFor={edit ? "image" + item?.id : "image"}
               className=" mt-4 cursor-pointer gap-1  hover:text-secondary hover:bg-transparent border border-secondary transition-all bg-secondary w-fit flex flex-row  rounded-full px-2 py-3 text-white"
             >
               <ArrowUpTrayIcon className=" size-5" />
@@ -104,7 +130,7 @@ export default function AddArticle({
                   setImage(fileUrl);
                 }
               }}
-              id="image"
+              id={edit ? "image" + item?.id : "image"}
               name="image"
               type="file"
               className=" hidden"
@@ -117,19 +143,19 @@ export default function AddArticle({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="عنوان"
-          className=" w-full outline-none bg-slate-200 rounded-lg px-2 py-2"
+          className=" text-sm w-full outline-none bg-slate-200 rounded-lg px-2 py-2"
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="توضیحات"
-          className=" resize-none w-full outline-none bg-slate-200 rounded-lg px-2 py-2"
+          className=" resize-none text-xs w-full outline-none bg-slate-200 rounded-lg px-2 py-2"
         />{" "}
         <button
           disabled={!title.trim()}
           className={`${
             !title.trim() ? "bg-gray-300" : "bg-green-700"
-          } text-white bg-green-700 px-3 py-1 self-start rounded`}
+          } text-white text-sm  px-3 py-1 self-start rounded`}
         >
           ثبت
         </button>
