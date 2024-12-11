@@ -1,14 +1,11 @@
 import {
-  Bars2Icon,
-  Bars3BottomLeftIcon,
-  Bars3Icon,
   BookmarkIcon,
   CurrencyDollarIcon,
   NewspaperIcon,
   UsersIcon,
 } from "@heroicons/react/16/solid";
-import pageLogo from "../assets/pageLogo.svg";
-import CategoryMenu from "./dashboard/categoryMenu";
+import pageLogo from "../../assets/pageLogo.svg";
+import CategoryMenu from "./categoryMenu";
 
 const routes = [
   { title: "ورزشی", id: 1, path: "/", icon: NewspaperIcon },
@@ -21,7 +18,7 @@ export default function Dashboard() {
   return (
     <section
       dir="rtl"
-      className="  text-white bg-secondary  sticky top-0 px-4 py-3 w-full flex flex-row items-center justify-between"
+      className="   text-white bg-secondary   top-0 px-4 py-3 w-full flex flex-row items-center justify-between"
     >
       <div className=" flex lg:gap-8 gap-1 items-center">
         <span className="">
