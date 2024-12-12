@@ -12,11 +12,13 @@ export default function ModifyArticle({
   edit,
   setEditId,
   item,
+  setLocalStorageData,
 }: {
   posts: postItem[];
   setPosts: React.Dispatch<postItem[]>;
   setToggleForm?: React.Dispatch<boolean>;
   setEditId?: React.Dispatch<number | string>;
+  setLocalStorageData: (data: postItem[]) => void;
   edit?: boolean;
   item?: postItem;
 }) {
@@ -39,22 +41,24 @@ export default function ModifyArticle({
   const createArticle = () => {
     const createdDate = new Date(Date.now());
     const formatDate = new Intl.DateTimeFormat("en-US").format(createdDate);
-    setPosts([
+    const data = [
       ...posts,
       { image, title, description, date: formatDate, id: Date.now() },
-    ]);
+    ];
+    setPosts(data);
+    setLocalStorageData(data);
     resetValue();
   };
   const editArticle = () => {
-    setPosts(
-      posts.map((i) => ({
-        ...i,
-        image: i.id == item?.id ? image : i.image,
-        description: i.id == item?.id ? description : i.description,
-        title: i.id == item?.id ? title : i.title,
-        date: i.date,
-      }))
-    );
+    const data = posts.map((i) => ({
+      ...i,
+      image: i.id == item?.id ? image : i.image,
+      description: i.id == item?.id ? description : i.description,
+      title: i.id == item?.id ? title : i.title,
+      date: i.date,
+    }));
+    setPosts(data);
+    setLocalStorageData(data);
     setEditId && setEditId("");
   };
   return (
@@ -161,7 +165,7 @@ export default function ModifyArticle({
               : "bg-green-700 border-green-700  transition-all hover:bg-transparent hover:text-green-700"
           } text-white text-sm border  px-3 py-1 self-start rounded`}
         >
-          ثبت
+          {edit ? "اعمال تغییرات" : "ثبت"}
         </button>
       </span>
     </form>

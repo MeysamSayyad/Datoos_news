@@ -17,22 +17,27 @@ export default function ArticleCard({
   setPosts,
   editId,
   setEditId,
+  setLocalStorageData,
 }: {
   item: postItem;
   posts: postItem[];
   setPosts: React.Dispatch<postItem[]>;
   editId: string | number;
+  setLocalStorageData: (data: postItem[]) => void;
   setEditId: React.Dispatch<string | number>;
 }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const deletePost = () => {
-    setPosts(posts.filter((i) => i.id != item.id));
+    const data = posts.filter((i) => i.id != item.id);
+    setPosts(data);
+    setLocalStorageData(data);
   };
 
   return editId == item?.id ? (
     <ModifyArticle
       posts={posts}
       setPosts={setPosts}
+      setLocalStorageData={setLocalStorageData}
       setEditId={setEditId}
       edit={true}
       item={item}

@@ -31,7 +31,16 @@ export default function ArticleSection() {
 
   const [editId, setEditId] = useState<string | number>("");
 
-  const [posts, setPosts] = useState<postItem[]>(sampleData);
+  const [posts, setPosts] = useState<postItem[]>(() =>
+    localStorage.getItem("postdata")
+      ? JSON.parse(localStorage.getItem("postdata") || "{}")
+      : sampleData
+  );
+  const setLocalStorageData = (data: postItem[]) => {
+    // store posts in localStorage
+    const stringData = JSON.stringify(data);
+    localStorage.setItem("postdata", stringData);
+  };
   return (
     <section className=" w-full mt-8 px-4 flex flex-col items-center">
       <div className=" w-full grid grid-cols-1 lg:grid-cols-4 items-start gap-5">
@@ -43,6 +52,7 @@ export default function ArticleSection() {
             key={item.id}
             item={item}
             editId={editId}
+            setLocalStorageData={setLocalStorageData}
             setEditId={setEditId}
           />
         ))}
@@ -59,6 +69,7 @@ export default function ArticleSection() {
             <ModifyArticle
               setToggleForm={setToggleForm}
               posts={posts}
+              setLocalStorageData={setLocalStorageData}
               setPosts={setPosts}
             />
           ) : (
