@@ -1,5 +1,5 @@
 import {
-  ClockIcon,
+  CalendarDateRangeIcon,
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
@@ -9,6 +9,7 @@ import noPhoto from "../../assets/images/no_photo.png";
 import { useState } from "react";
 
 import ModifyArticle from "./modifyArticle";
+import DeleteModal from "./deleteModal";
 
 export default function ArticleCard({
   item,
@@ -23,19 +24,23 @@ export default function ArticleCard({
   editId: string | number;
   setEditId: React.Dispatch<string | number>;
 }) {
-  const [editArticle, setEditArticle] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const deletePost = () => {
+    setPosts(posts.filter((i) => i.id != item.id));
+  };
 
-  return editArticle && editId == item?.id ? (
+  return editId == item?.id ? (
     <ModifyArticle
       posts={posts}
       setPosts={setPosts}
-      setToggleForm={setEditArticle}
+      setEditId={setEditId}
       edit={true}
       item={item}
     />
   ) : (
     <article className="  shadow-[0px_0px_12px_5px_rgba(0,_0,_0,_0.1)] h-[416px] rounded-lg  justify-between  text-black w-full flex flex-col items-center">
       <span className="cursor-pointer flex items-center justify-center  rounded-t-lg overflow-hidden h-[60%] w-full">
+        {/* article Image */}
         <img
           className={` ${
             !item?.image ? "w-[50%]  h-[60%]" : "object-cover h-full w-full"
@@ -45,6 +50,7 @@ export default function ArticleCard({
         />
       </span>
       <span className=" py-3 px-2 w-full gap-3 flex flex-col items-start">
+        {/* article title & description */}
         <h5 className=" hover:underline break-words w-full cursor-pointer font-bold">
           {textModifier(item.title, 77)}
         </h5>
@@ -56,14 +62,12 @@ export default function ArticleCard({
         <span className=" flex items-center gap-1">
           {/* created date */}
           <small>{item?.date}</small>
-          <ClockIcon className=" size-[14px]" />
+          <CalendarDateRangeIcon className=" size-[14px]" />
         </span>
         <span className=" gap-2 flex items-center ">
           {/* operation buttons */}
           <PencilSquareIcon
             onClick={() => {
-              setEditArticle(true);
-
               // setting Item id to prevent multiple edits
               setEditId(item.id);
             }}
@@ -71,10 +75,16 @@ export default function ArticleCard({
           />
           <TrashIcon
             onClick={() => {
-              setPosts(posts.filter((i) => i.id != item.id));
+              setShowDeleteModal(true);
             }}
             className=" hover:text-[#B8001F] cursor-pointer size-[18px]"
           />
+          {showDeleteModal && (
+            <DeleteModal
+              setShowDeleteModal={setShowDeleteModal}
+              deletePost={deletePost}
+            />
+          )}
         </span>
       </div>
     </article>

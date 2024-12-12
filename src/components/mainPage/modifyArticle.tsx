@@ -10,11 +10,13 @@ export default function ModifyArticle({
   setPosts,
   setToggleForm,
   edit,
+  setEditId,
   item,
 }: {
   posts: postItem[];
   setPosts: React.Dispatch<postItem[]>;
-  setToggleForm: React.Dispatch<boolean>;
+  setToggleForm?: React.Dispatch<boolean>;
+  setEditId?: React.Dispatch<number | string>;
   edit?: boolean;
   item?: postItem;
 }) {
@@ -31,6 +33,7 @@ export default function ModifyArticle({
     setImage("");
     setTitle("");
     setDescription("");
+    setToggleForm && setToggleForm(false);
   };
 
   const createArticle = () => {
@@ -41,7 +44,6 @@ export default function ModifyArticle({
       { image, title, description, date: formatDate, id: Date.now() },
     ]);
     resetValue();
-    setToggleForm(false);
   };
   const editArticle = () => {
     setPosts(
@@ -53,7 +55,7 @@ export default function ModifyArticle({
         date: i.date,
       }))
     );
-    setToggleForm(false);
+    setEditId && setEditId("");
   };
   return (
     <form
@@ -69,7 +71,7 @@ export default function ModifyArticle({
         transition-all   flex flex-row  rounded-full px-2 py-3 "
         onClick={() => {
           resetValue();
-          setToggleForm(false);
+          setEditId && setEditId("");
         }}
       >
         <ArrowUturnRightIcon className=" size-5" />
@@ -83,7 +85,7 @@ export default function ModifyArticle({
         transition-all   flex flex-row  rounded-bl-full px-2 py-3 "
               onClick={() => {
                 resetValue();
-                setToggleForm(false);
+                setEditId && setEditId("");
               }}
             >
               <ArrowUturnRightIcon className=" size-5" />
@@ -154,8 +156,10 @@ export default function ModifyArticle({
         <button
           disabled={!title.trim()}
           className={`${
-            !title.trim() ? "bg-gray-300" : "bg-green-700"
-          } text-white text-sm  px-3 py-1 self-start rounded`}
+            !title.trim()
+              ? "bg-gray-300 border-gray-300"
+              : "bg-green-700 border-green-700  transition-all hover:bg-transparent hover:text-green-700"
+          } text-white text-sm border  px-3 py-1 self-start rounded`}
         >
           ثبت
         </button>
