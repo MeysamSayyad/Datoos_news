@@ -102,7 +102,7 @@ export default function ModifyArticle({
             />
             <label
               htmlFor={edit ? "image" + item?.id : "image"}
-              className="cursor-pointer  text-white  absolute right-0  bottom-0 opacity-0 border group-hover:opacity-80  transition-all bg-secondary w-fit flex flex-row  rounded-tl-full px-2 py-3 "
+              className="cursor-pointer  text-white  absolute right-0  bottom-0 opacity-80 border   transition-all bg-secondary w-fit flex flex-row  rounded-tl-full px-2 py-3 "
             >
               <ArrowUpTrayIcon className=" size-5" />
             </label>
@@ -113,6 +113,7 @@ export default function ModifyArticle({
                   setImage(fileUrl);
                 }
               }}
+              accept="image/*"
               id={edit ? "image" + item?.id : "image"}
               name="image"
               type="file"
@@ -136,6 +137,7 @@ export default function ModifyArticle({
                   setImage(fileUrl);
                 }
               }}
+              accept="image/*"
               id={edit ? "image" + item?.id : "image"}
               name="image"
               type="file"
